@@ -1,0 +1,37 @@
+.CodeMirror {
+   height: 80vh !important;
+   font-weight: 300;
+}
+
+.editor {
+   height: 500px;
+
+   .card-body {
+      padding: 0;
+      position: relative;
+   }
+
+   .card-header {
+      span {
+         line-height: 1.75rem;
+      }
+
+      .btn-group {
+         float: right;
+      }
+
+      button {
+         float: right;
+         margin: 0 10px;
+      }
+   }
+}
+
+.copy-btn {
+   position: absolute;
+   z-index: 5;
+   right: 10px;
+   top: 10px;
+   padding: 2px 20px;
+   font-weight: 300;
+}
