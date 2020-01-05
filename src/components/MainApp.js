@@ -37,7 +37,7 @@ class MainApp extends Component {
          localStorage.setItem(HC_LOCAL, code);
       }
 
-      Highcharts.charts.forEach(chartRef => {
+      window.Highcharts.charts.forEach(chartRef => {
          if (chartRef) chartRef.destroy();
       });
 
