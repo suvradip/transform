@@ -180,5 +180,5 @@ $RECYCLE.BIN/
 *.lnk
 
 temp/
-
 dist/
+build/

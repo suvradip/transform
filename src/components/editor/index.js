@@ -1,33 +1,33 @@
-import React from "react";
-import PropTypes from "prop-types";
-import CodeMirror from "@skidding/react-codemirror";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { getFcConfig } from "../../actions";
+import React from 'react';
+import PropTypes from 'prop-types';
+import CodeMirror from '@skidding/react-codemirror';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { getFcConfig } from '../../actions';
 
-import "codemirror/mode/javascript/javascript";
-import "codemirror/addon/edit/matchbrackets";
-import "codemirror/addon/comment/continuecomment";
-import "codemirror/addon/comment/comment";
-import "codemirror/addon/fold/foldcode";
-import "codemirror/addon/fold/foldgutter";
-import "codemirror/addon/fold/brace-fold";
-import "codemirror/addon/fold/indent-fold";
-import "codemirror/addon/fold/comment-fold";
-import "codemirror/addon/hint/javascript-hint";
-import "codemirror/lib/codemirror.css";
-import "codemirror/theme/material.css";
-import "./style.scss";
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/addon/edit/matchbrackets';
+import 'codemirror/addon/comment/continuecomment';
+import 'codemirror/addon/comment/comment';
+import 'codemirror/addon/fold/foldcode';
+import 'codemirror/addon/fold/foldgutter';
+import 'codemirror/addon/fold/brace-fold';
+import 'codemirror/addon/fold/indent-fold';
+import 'codemirror/addon/fold/comment-fold';
+import 'codemirror/addon/hint/javascript-hint';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
+import './style.scss';
 
 function formatCode(jsString) {
    try {
       return window.prettier.format(jsString, {
-         parser: "babel",
+         parser: 'babel',
          plugins: window.prettierPlugins,
          tabWidth: 4,
          printWidth: 60,
          semi: true,
          singleQuote: true,
-         useTabs: false
+         useTabs: false,
       });
    } catch (error) {
       console.log(error.message);
@@ -36,16 +36,16 @@ function formatCode(jsString) {
 }
 
 const codeMirrorOptions = {
-   theme: "material",
-   mode: "javascript",
+   theme: 'material',
+   mode: 'javascript',
    indentUnit: 3,
    tabSize: 3,
    lineNumbers: true,
    matchBrackets: true,
    foldGutter: true,
-   continueComments: "Enter",
-   extraKeys: { "Cmd-/": "toggleComment" },
-   gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+   continueComments: 'Enter',
+   extraKeys: { 'Cmd-/': 'toggleComment' },
+   gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
 };
 
 class Editor extends React.Component {
@@ -55,7 +55,7 @@ class Editor extends React.Component {
       this.state = {
          code: formatCode(code),
          showConvertBtn: disableConvert,
-         enableConvertBtn: true
+         enableConvertBtn: true,
       };
    }
 
@@ -69,7 +69,7 @@ class Editor extends React.Component {
 
    updateCode = newCode => {
       this.setState({
-         code: newCode
+         code: newCode,
       });
    };
 
@@ -79,7 +79,7 @@ class Editor extends React.Component {
       const { code } = this.state;
       onClickRun(code);
       this.setState({
-         enableConvertBtn: false
+         enableConvertBtn: false,
       });
    };
 
@@ -97,7 +97,7 @@ class Editor extends React.Component {
 
    tidyCode = () => {
       this.setState(state => ({
-         code: formatCode(state.code)
+         code: formatCode(state.code),
       }));
    };
 
@@ -109,11 +109,7 @@ class Editor extends React.Component {
             <div className="card-header">
                <span className="h5 d-inline">{name}</span>
                <div className="btn-group text-right">
-                  <button
-                     type="submit"
-                     className="btn btn-info"
-                     onClick={this.tidyCode}
-                  >
+                  <button type="submit" className="btn btn-info" onClick={this.tidyCode}>
                      Tidy
                   </button>
 
@@ -127,33 +123,22 @@ class Editor extends React.Component {
                         convert
                      </button>
                   ) : (
-                     ""
+                     ''
                   )}
 
-                  <button
-                     type="submit"
-                     className="btn btn-success"
-                     onClick={this.onRenderCharts}
-                  >
+                  <button type="submit" className="btn btn-success" onClick={this.onRenderCharts}>
                      Run
                   </button>
                </div>
             </div>
             <div className="card-body">
                <CopyToClipboard text={code}>
-                  <button
-                     type="submit"
-                     className="btn btn-outline-light copy-btn btn-sm"
-                  >
+                  <button type="submit" className="btn btn-outline-light copy-btn btn-sm">
                      Copy
                   </button>
                </CopyToClipboard>
 
-               <CodeMirror
-                  value={code}
-                  options={codeMirrorOptions}
-                  onChange={this.updateCode}
-               />
+               <CodeMirror value={code} options={codeMirrorOptions} onChange={this.updateCode} />
             </div>
          </div>
       );
@@ -165,11 +150,11 @@ Editor.propTypes = {
    code: PropTypes.string.isRequired,
    disableConvert: PropTypes.bool,
    onClickRun: PropTypes.func.isRequired,
-   dispatch: PropTypes.func.isRequired
+   dispatch: PropTypes.func.isRequired,
 };
 
 Editor.defaultProps = {
-   disableConvert: true
+   disableConvert: true,
 };
 
 export default Editor;

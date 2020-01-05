@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+      <title>Pie | Highcharts to FusionCharts</title>
+      <script src="https://code.highcharts.com/highcharts.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+      <script src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+      <script src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+   </head>
+   <body>
+      <div id="container" style="width:100%; height:400px;"></div>
+      <div id="container1" style="width:100%; height:400px;"></div>
+   </body>
+   <script>
+      Highcharts.chart('container', {
+         chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+         },
+         title: {
+            text: 'Browser market shares in January, 2018',
+         },
+         tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+         },
+         plotOptions: {
+            pie: {
+               allowPointSelect: true,
+               cursor: 'pointer',
+               dataLabels: {
+                  enabled: true,
+                  format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+               },
+            },
+         },
+         series: [
+            {
+               name: 'Brands',
+               colorByPoint: true,
+               data: [
+                  {
+                     name: 'Chrome',
+                     y: 61.41,
+                     sliced: true,
+                     selected: true,
+                  },
+                  {
+                     name: 'Internet Explorer',
+                     y: 11.84,
+                  },
+                  {
+                     name: 'Firefox',
+                     y: 10.85,
+                  },
+                  {
+                     name: 'Edge',
+                     y: 4.67,
+                  },
+                  {
+                     name: 'Safari',
+                     y: 4.18,
+                  },
+                  {
+                     name: 'Sogou Explorer',
+                     y: 1.64,
+                  },
+                  {
+                     name: 'Opera',
+                     y: 1.6,
+                  },
+                  {
+                     name: 'QQ',
+                     y: 1.2,
+                  },
+                  {
+                     name: 'Other',
+                     y: 2.61,
+                  },
+               ],
+            },
+         ],
+      });
+   </script>
+
+   <script>
+      const { origin } = window.location;
+      const endPoint = `${origin}/api/hc-fc/`;
+      async function submitData(config, container) {
+         const { data } = await axios.post(endPoint, { chartConfig: config });
+         console.log(data);
+         new FusionCharts({
+            ...data,
+         }).render(document.getElementById('container1'));
+      }
+
+      const charts = Highcharts.charts;
+
+      charts.forEach((chartRef, index) => {
+         const chartConfig = JSON.stringify(chartRef.userOptions);
+         const containerId = chartRef.renderTo.id;
+         // chartRef.destroy();
+         submitData(chartConfig, document.getElementById(containerId));
+      });
+   </script>
+</html>

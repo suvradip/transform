@@ -1,18 +1,18 @@
 /* eslint-disable no-eval */
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ChartViewer from "./chartViewer";
-import Editor from "./editor";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ChartViewer from './chartViewer';
+import Editor from './editor';
 
-const HC_LOCAL = "hcCode";
+const HC_LOCAL = 'hcCode';
 
 class MainApp extends Component {
    constructor(props) {
       super(props);
 
       this.state = {
-         hcCode: localStorage.getItem(HC_LOCAL) || "",
-         fcCode: ""
+         hcCode: localStorage.getItem(HC_LOCAL) || '',
+         fcCode: '',
       };
    }
 
@@ -27,7 +27,7 @@ class MainApp extends Component {
 
          // eslint-disable-next-line
          this.setState({
-            fcCode: finalHTMLContent
+            fcCode: finalHTMLContent,
          });
       }
    }
@@ -82,11 +82,11 @@ class MainApp extends Component {
 
 MainApp.propTypes = {
    fcConfiguration: PropTypes.object,
-   dispatch: PropTypes.func.isRequired
+   dispatch: PropTypes.func.isRequired,
 };
 
 MainApp.defaultProps = {
-   fcConfiguration: undefined
+   fcConfiguration: undefined,
 };
 
 export default MainApp;

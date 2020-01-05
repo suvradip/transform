@@ -1,4 +1,4 @@
-import { RECEIVE_CONFIG } from "../constants/actionTypes";
+import { RECEIVE_CONFIG } from '../constants/actionTypes';
 
 export default (state = {}, action) => {
    switch (action.type) {

@@ -1,5 +1,5 @@
-import React from "react";
-import MainSection from "../container/mainSection";
+import React from 'react';
+import MainSection from '../container/mainSection';
 
 const App = () => {
    return <MainSection />;

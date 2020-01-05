@@ -1,9 +1,9 @@
 // eslint-disable-next-line
 import { combineReducers } from "redux";
-import playground from "./playground";
+import playground from './playground';
 
 const rootReducer = combineReducers({
-   playground
+   playground,
 });
 
 export default rootReducer;
