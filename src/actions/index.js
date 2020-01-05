@@ -8,3 +8,5 @@ export const getFcConfig = async (dispatch, params) => {
       payload: data
    });
 };
+
+export default getFcConfig;

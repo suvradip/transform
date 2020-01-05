@@ -3,9 +3,7 @@ import { RECEIVE_CONFIG } from "../constants/actionTypes";
 export default (state = {}, action) => {
    switch (action.type) {
       case RECEIVE_CONFIG:
-         return Object.assign({}, state, {
-            fcConfiguration: action.payload
-         });
+         return { ...state, fcConfiguration: action.payload };
       default:
          return state;
    }

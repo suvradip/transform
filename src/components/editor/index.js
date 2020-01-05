@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import CodeMirror from "@skidding/react-codemirror";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { getFcConfig } from "../../actions";
@@ -30,6 +31,7 @@ function formatCode(jsString) {
       });
    } catch (error) {
       console.log(error.message);
+      return false;
    }
 }
 
@@ -49,12 +51,20 @@ const codeMirrorOptions = {
 class Editor extends React.Component {
    constructor(props) {
       super(props);
-      const { disableConvert = true, code } = this.props;
+      const { disableConvert, code } = this.props;
       this.state = {
          code: formatCode(code),
          showConvertBtn: disableConvert,
          enableConvertBtn: true
       };
+   }
+
+   componentDidUpdate(nextProps) {
+      const { code } = this.props;
+      if (nextProps.code !== code) {
+         // eslint-disable-next-line
+         this.setState({ code: formatCode(code) });
+      }
    }
 
    updateCode = newCode => {
@@ -65,7 +75,9 @@ class Editor extends React.Component {
 
    onRenderCharts = ev => {
       ev.preventDefault();
-      this.props.onClickRun(this.state.code);
+      const { onClickRun } = this.props;
+      const { code } = this.state;
+      onClickRun(code);
       this.setState({
          enableConvertBtn: false
       });
@@ -74,10 +86,11 @@ class Editor extends React.Component {
    onConvertHcToFc = ev => {
       ev.preventDefault();
       const { charts } = window.Highcharts;
+      const { dispatch } = this.props;
       charts.forEach(async chartRef => {
          if (chartRef) {
             const chartConfig = JSON.stringify(chartRef.userOptions);
-            getFcConfig(this.props.dispatch, { chartConfig });
+            getFcConfig(dispatch, { chartConfig });
          }
       });
    };
@@ -88,27 +101,27 @@ class Editor extends React.Component {
       }));
    };
 
-   componentDidUpdate(nextProps) {
-      const { code } = this.props;
-      if (nextProps.code !== code) {
-         this.setState({ code: formatCode(code) });
-      }
-   }
-
    render() {
+      const { name } = this.props;
+      const { showConvertBtn, enableConvertBtn, code } = this.state;
       return (
          <div className="card editor">
             <div className="card-header">
-               <span className="h5 d-inline">{this.props.name}</span>
+               <span className="h5 d-inline">{name}</span>
                <div className="btn-group text-right">
-                  <button className="btn btn-info" onClick={this.tidyCode}>
+                  <button
+                     type="submit"
+                     className="btn btn-info"
+                     onClick={this.tidyCode}
+                  >
                      Tidy
                   </button>
 
-                  {this.state.showConvertBtn ? (
+                  {showConvertBtn ? (
                      <button
+                        type="submit"
                         className="btn btn-info"
-                        disabled={this.state.enableConvertBtn}
+                        disabled={enableConvertBtn}
                         onClick={this.onConvertHcToFc}
                      >
                         convert
@@ -118,6 +131,7 @@ class Editor extends React.Component {
                   )}
 
                   <button
+                     type="submit"
                      className="btn btn-success"
                      onClick={this.onRenderCharts}
                   >
@@ -126,9 +140,9 @@ class Editor extends React.Component {
                </div>
             </div>
             <div className="card-body">
-               <CopyToClipboard text={this.state.code}>
+               <CopyToClipboard text={code}>
                   <button
-                     id="hc-code-copy"
+                     type="submit"
                      className="btn btn-outline-light copy-btn btn-sm"
                   >
                      Copy
@@ -136,8 +150,7 @@ class Editor extends React.Component {
                </CopyToClipboard>
 
                <CodeMirror
-                  ref="editor"
-                  value={this.state.code}
+                  value={code}
                   options={codeMirrorOptions}
                   onChange={this.updateCode}
                />
@@ -146,5 +159,17 @@ class Editor extends React.Component {
       );
    }
 }
+
+Editor.propTypes = {
+   name: PropTypes.string.isRequired,
+   code: PropTypes.string.isRequired,
+   disableConvert: PropTypes.bool,
+   onClickRun: PropTypes.func.isRequired,
+   dispatch: PropTypes.func.isRequired
+};
+
+Editor.defaultProps = {
+   disableConvert: true
+};
 
 export default Editor;

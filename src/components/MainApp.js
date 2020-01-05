@@ -1,5 +1,6 @@
 /* eslint-disable no-eval */
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import ChartViewer from "./chartViewer";
 import Editor from "./editor";
 
@@ -15,22 +16,6 @@ class MainApp extends Component {
       };
    }
 
-   renderHighCharts = code => {
-      if (code) {
-         localStorage.setItem(HC_LOCAL, code);
-      }
-
-      window.Highcharts.charts.forEach(chartRef => {
-         if (chartRef) chartRef.destroy();
-      });
-
-      eval(code);
-   };
-
-   renderFusionCharts(code) {
-      eval(code);
-   }
-
    componentDidUpdate(nextProps) {
       const { fcConfiguration } = this.props;
       if (nextProps.fcConfiguration !== fcConfiguration) {
@@ -40,13 +25,32 @@ class MainApp extends Component {
 
          eval(finalHTMLContent);
 
+         // eslint-disable-next-line
          this.setState({
             fcCode: finalHTMLContent
          });
       }
    }
 
+   renderHighCharts = code => {
+      if (code) {
+         localStorage.setItem(HC_LOCAL, code);
+      }
+
+      Highcharts.charts.forEach(chartRef => {
+         if (chartRef) chartRef.destroy();
+      });
+
+      eval(code);
+   };
+
+   renderFusionCharts = code => {
+      eval(code);
+   };
+
    render() {
+      const { hcCode, fcCode } = this.state;
+      const { dispatch } = this.props;
       return (
          <div className="container-fluid">
             <h3 className="mt-2 mb-5">Conversion</h3>
@@ -56,17 +60,18 @@ class MainApp extends Component {
                   <Editor
                      name="HighCharts"
                      onClickRun={this.renderHighCharts}
-                     code={this.state.hcCode}
-                     dispatch={this.props.dispatch}
+                     code={hcCode}
+                     dispatch={dispatch}
                   />
                </div>
                <div className="col-6">
                   <ChartViewer containerId="chart-container" />
                   <Editor
                      name="FusionCharts"
-                     code={this.state.fcCode}
+                     code={fcCode}
                      disableConvert={false}
                      onClickRun={this.renderFusionCharts}
+                     dispatch={dispatch}
                   />
                </div>
             </div>
@@ -74,5 +79,14 @@ class MainApp extends Component {
       );
    }
 }
+
+MainApp.propTypes = {
+   fcConfiguration: PropTypes.object,
+   dispatch: PropTypes.func.isRequired
+};
+
+MainApp.defaultProps = {
+   fcConfiguration: undefined
+};
 
 export default MainApp;
