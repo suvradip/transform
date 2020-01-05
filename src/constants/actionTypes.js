@@ -1,1 +1,1 @@
-export const CONVERT_HC_TO_FC = "CONVERT_HC_TO_FC";
+export const RECEIVE_CONFIG = "RECEIVE_CONFIG";

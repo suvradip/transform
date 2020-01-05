@@ -1,10 +1,7 @@
 import React from "react";
-import { connect } from "react-redux";
-// import CodeMirror from "react-codemirror";
 import CodeMirror from "@skidding/react-codemirror";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-
-import { CONVERT_HC_TO_FC } from "../../constants/actionTypes";
+import { getFcConfig } from "../../actions";
 
 import "codemirror/mode/javascript/javascript";
 import "codemirror/addon/edit/matchbrackets";
@@ -19,14 +16,6 @@ import "codemirror/addon/hint/javascript-hint";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import "./style.scss";
-
-const mapStateToProps = state => ({
-   ...state.playground.fcChartConfig
-});
-
-const mapDispatchToProps = dispatch => ({
-   getAttr: payload => dispatch({ type: CONVERT_HC_TO_FC, payload })
-});
 
 function formatCode(jsString) {
    try {
@@ -84,7 +73,13 @@ class Editor extends React.Component {
 
    onConvertHcToFc = ev => {
       ev.preventDefault();
-      this.props.onClickConvert();
+      const { charts } = window.Highcharts;
+      charts.forEach(async chartRef => {
+         if (chartRef) {
+            const chartConfig = JSON.stringify(chartRef.userOptions);
+            getFcConfig(this.props.dispatch, { chartConfig });
+         }
+      });
    };
 
    tidyCode = () => {
@@ -101,19 +96,6 @@ class Editor extends React.Component {
    }
 
    render() {
-      let convertBtn;
-      if (this.state.showConvertBtn) {
-         convertBtn = (
-            <button
-               className="btn btn-info"
-               disabled={this.state.enableConvertBtn}
-               onClick={this.onConvertHcToFc}
-            >
-               convert
-            </button>
-         );
-      }
-
       return (
          <div className="card editor">
             <div className="card-header">
@@ -123,7 +105,17 @@ class Editor extends React.Component {
                      Tidy
                   </button>
 
-                  {convertBtn}
+                  {this.state.showConvertBtn ? (
+                     <button
+                        className="btn btn-info"
+                        disabled={this.state.enableConvertBtn}
+                        onClick={this.onConvertHcToFc}
+                     >
+                        convert
+                     </button>
+                  ) : (
+                     ""
+                  )}
 
                   <button
                      className="btn btn-success"
@@ -155,4 +147,4 @@ class Editor extends React.Component {
    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Editor);
+export default Editor;
