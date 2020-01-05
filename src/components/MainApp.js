@@ -51,28 +51,57 @@ class MainApp extends Component {
    render() {
       const { hcCode, fcCode } = this.state;
       const { dispatch } = this.props;
+
+      const styleObj = {
+         general: {
+            padding: 0,
+            margin: 0,
+         },
+         wrapper: {
+            padding: '5px',
+            margin: '10px',
+         },
+         nav: {
+            backgroundColor: '#002934',
+         },
+         img: {
+            height: '65px',
+            width: 'auto',
+         },
+      };
+
       return (
-         <div className="container-fluid">
-            <h3 className="mt-2 mb-5">Conversion</h3>
-            <div className="row">
-               <div className="col-6">
-                  <ChartViewer containerId="container" />
-                  <Editor
-                     name="HighCharts"
-                     onClickRun={this.renderHighCharts}
-                     code={hcCode}
-                     dispatch={dispatch}
-                  />
-               </div>
-               <div className="col-6">
-                  <ChartViewer containerId="chart-container" />
-                  <Editor
-                     name="FusionCharts"
-                     code={fcCode}
-                     disableConvert={false}
-                     onClickRun={this.renderFusionCharts}
-                     dispatch={dispatch}
-                  />
+         <div className="container-fluid" style={styleObj.general}>
+            <div
+               className="mb-5 d-flex justify-content-between align-items-center"
+               style={styleObj.nav}
+            >
+               <img style={styleObj.img} src="/logo.png" alt="brand logo" />
+               <a href="/samples/" target="_blank" className="btn btn-outline-info mr-3">
+                  Other samples
+               </a>
+            </div>
+            <div style={styleObj.wrapper}>
+               <div className="row">
+                  <div className="col-6">
+                     <ChartViewer containerId="container" />
+                     <Editor
+                        name="HighCharts"
+                        onClickRun={this.renderHighCharts}
+                        code={hcCode}
+                        dispatch={dispatch}
+                     />
+                  </div>
+                  <div className="col-6">
+                     <ChartViewer containerId="chart-container" />
+                     <Editor
+                        name="FusionCharts"
+                        code={fcCode}
+                        disableConvert={false}
+                        onClickRun={this.renderFusionCharts}
+                        dispatch={dispatch}
+                     />
+                  </div>
                </div>
             </div>
          </div>
