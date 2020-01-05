@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_ROOT = 'http://localhost:8888/api/hc-fc/';
+const { origin } = window.location;
+const API_ROOT = `${origin}/api/hc-fc/`;
 
 /* common response parser */
 const responseBody = response => response.data;
