@@ -21,6 +21,7 @@
    const libPath = 'https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js';
    const libTheme =
       'https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js';
+
    class Conversion {
       constructor({ lib, api } = {}) {
          this.replaceCharts = true;
@@ -83,7 +84,7 @@
 
    // (() => {
    //    const script = document.createElement('script');
-   //    script.src = 'https://s3.amazonaws.com/static.cdn.fusioncharts.com/conversion.js';
+   //    script.src = 'https://s3.amazonaws.com/static.cdn.fusioncharts.com/transform.min.js';
    //    script.async = false;
    //    script.type = 'text/javascript';
    //    document.body.appendChild(script);
